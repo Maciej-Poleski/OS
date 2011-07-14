@@ -135,6 +135,24 @@ inc word [stringLength]
 
 jmp bp
 
+; INPUT: di - destination
+; INPUT: si - source
+; INPUT: cx - size
+; DESTROY: al
+memcpy:
+        jmp     .L2     #
+.L3:
+        mov     al, BYTE PTR [si]      # tmp97,* source
+        dec     cx     # i
+        mov     BYTE PTR [di], al      #* destination, tmp97
+        inc     si     # source
+        inc     di     # destination
+.L2:
+        test    cx, cx  # i
+        jne     .L3     #,
+        jmp bp
+
+
 characterColor	equ 15
 cursorPosition: dw 0		; Pierwszy wolny znak na ekranie
 stringLength:   dw 0		; D³ugoœæ napisu w buforze

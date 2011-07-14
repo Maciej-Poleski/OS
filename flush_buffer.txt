@@ -1,0 +1,39 @@
+﻿flush_buffer():
+
+ES <- 0xb800		(adres)
+SI <- buffer		(adres)
+DI <- *cursorPosition*2	(liczba)
+
+AH <- characterColor	(liczba - kolor)
+
+REP(*stringLength):
+    AL <- *DS:SI++	(znak)
+    *ES:DI++ <- AX	(znak + kolor)
+
+*cursorPosition <- *cursorPosition + *stringLength	(liczba)
+*stringLength <- 0					(liczba)
+
+set_cursor_position()
+
+return
+
+DANE:
+ilość znaków w buforze
+pozycja kursora na ekranie
+długość w znakach jednego wiersza (80)
+
+ZAŁÓŻENIA:
+rozmiar buforu jest mniejszy od rozmiaru ekranu (licząc w znakach)
+
+PROCEDURA:
+obliczyć ile znaków zostanie wyświetlonych na ekranie (łącznie ze spacjami)
+zarezerwować w buforze miejsce na znaki do wyświetlenia (być może trzeba przewinąć ekran)
+opróżnić bufor wyświetlając na ekranie znaki
+dopełnić ostatnią linię spacjami
+ustawić kursor za ostatnim wyświetlonym znakiem
+koniec
+
+PRZYPADKI BRZEGOWE:
+bufor jest pusty
+bufor ma jeden znak
+bufor ma kilka znaków
